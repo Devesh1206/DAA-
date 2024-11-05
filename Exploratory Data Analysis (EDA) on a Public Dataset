@@ -1,0 +1,56 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+#matplotlib inline
+# Load the Titanic dataset
+data = pd.read_csv("E:\\CU\\titanic.csv")
+# View the first few rows
+print(data.head())
+
+# Check the structure and data types of each column
+print(data.info())
+
+# Get summary statistics for numeric columns
+print(data.describe())
+# Check for missing values
+print(data.isnull().sum())
+
+# Example handling: Fill missing 'Age' values with the median age
+data['Age'].fillna(data['Age'].median(), inplace=True)
+
+# Drop rows with missing values in 'Embarked' column (if few)
+data.dropna(subset=['Embarked'], inplace=True)
+# Count of survived vs. not survived
+sns.countplot(data=data, x='Survived')
+plt.title("Count of Survived vs. Not Survived")
+plt.show()
+# Distribution of age
+sns.histplot(data['Age'], bins=30, kde=True)
+plt.title("Age Distribution")
+plt.show()
+sns.countplot(data=data, x='Pclass')
+plt.title("Passenger Class Distribution")
+plt.show()
+# Survival rate by gender
+sns.barplot(data=data, x='Sex', y='Survived')
+plt.title("Survival Rate by Gender")
+plt.show()
+
+# Survival rate by passenger class
+sns.barplot(data=data, x='Pclass', y='Survived')
+plt.title("Survival Rate by Passenger Class")
+plt.show()
+# Age distribution by survival
+sns.boxplot(data=data, x='Survived', y='Age')
+plt.title("Age Distribution by Survival")
+plt.show()
+
+# Survival by passenger class and gender
+sns.catplot(data=data, x='Pclass', hue='Survived', col='Sex', kind='count')
+plt.show()
+# Correlation matrix
+correlation_matrix = data.corr()
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
+plt.title("Correlation Matrix")
+plt.show()
